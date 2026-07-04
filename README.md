@@ -51,24 +51,30 @@ See [sema-lang.com](https://sema-lang.com) for other install options.
 
 ### Running Sema files
 
-A play button (▶) appears in the gutter — click it (or use the task runner) to run the current file. To evaluate just a selection, use the **sema eval form** task. Override the command in your project's `.zed/tasks.json` if you need a custom binary during development:
+The extension detects runnable code (a play button ▶ in the gutter for the whole file and each top-level form), but **Zed extensions can't ship tasks** — you define what the ▶ runs. Add these to your tasks (`zed: open tasks`, or a project `.zed/tasks.json`):
 
 ```json
 [
   {
-    "label": "sema run (dev)",
+    "label": "sema run",
     "command": "sema",
     "args": ["$ZED_FILE"],
     "tags": ["sema-run"]
+  },
+  {
+    "label": "sema eval form",
+    "command": "sema",
+    "args": ["eval", "--expr", "$ZED_SELECTED_TEXT", "--no-llm"],
+    "tags": ["sema-run-form"]
   }
 ]
 ```
 
+The `tags` match the runnable captures, so the ▶ buttons run these. Tasks run in your project shell, so `sema` resolves from your `PATH`.
+
 ### Language Server (LSP)
 
 The extension **registers the language server automatically** — no settings needed. Open a `.sema` file and `sema lsp` starts (the `sema` binary is resolved from your `PATH`). Completions, hover, go-to-definition, references, rename, and semantic tokens work out of the box.
-
-> If you added a manual `"lsp": { "sema": … }` block from an older version, you can remove it — the extension now provides the server.
 
 ### Debugging
 
