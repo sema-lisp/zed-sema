@@ -38,3 +38,17 @@ jobs:
             fi
           done
           [ "$missing" -eq 0 ] && echo "all query files present"
+
+  build:
+    name: Build extension (wasm)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+          components: rustfmt
+      - name: Build the Rust extension (DAP + MCP)
+        run: cargo build --release --target wasm32-wasip1
+      - name: Check formatting
+        run: cargo fmt --check

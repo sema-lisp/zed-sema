@@ -26,6 +26,8 @@ The [tree-sitter-sema](https://github.com/sema-lisp/tree-sitter-sema) grammar is
 - **Auto-indent** — 2-space indentation for lists, vectors, and hash maps; outdent on closing delimiters.
 - **Vim text objects** — `af`/`if` for function definitions (`define`, `defun`, `lambda`, `fn`, `defmacro`), `ac`/`ic` for agents and tools (`defagent`, `deftool`), plus comment objects.
 - **Runnables & tasks** — a gutter play button (▶) to run the whole file (`sema-run`) or evaluate the selected form (`sema-run-form`), backed by the `sema` CLI.
+- **Debugging (DAP)** — launch-and-debug `.sema` programs via Sema's debug adapter (`sema dap`): breakpoints, stepping, and variable inspection. Pick **Sema** in Zed's debugger, or add a launch config (see below).
+- **MCP server** — the extension registers Sema's MCP context server (`sema mcp`), exposing Sema's tools (eval, build, notebook, docs) to Zed's agent panel.
 - **Secret redaction** — string arguments to `llm/configure`, `llm/define-provider`, and `llm/auto-configure` are hidden during screen sharing.
 
 ## Requirements
@@ -75,9 +77,27 @@ Sema ships a built-in language server (`sema lsp`). Enable it in your Zed settin
 }
 ```
 
-## Roadmap
+### Debugging
 
-- **Debug adapter (DAP)** — Sema ships a Debug Adapter (`sema dap`) with breakpoints, stepping, and variable inspection. Wiring it into Zed requires a `zed_extension_api` Rust component (Zed exposes debug adapters through compiled extensions, not query files), so it is planned but not yet implemented here. Tracked in the issues.
+Pick **Sema** when starting a debug session, or add a launch config to `.zed/debug.json`:
+
+```json
+[
+  {
+    "label": "Debug Sema Program",
+    "adapter": "sema",
+    "request": "launch",
+    "program": "$ZED_FILE",
+    "stopOnEntry": false
+  }
+]
+```
+
+The adapter runs `sema dap` over stdio (the `sema` binary is resolved from your `PATH`, or a per-adapter override).
+
+### MCP server
+
+The `sema` MCP context server is registered automatically; enable it in Zed's agent panel to give the assistant access to Sema's tools (eval, build, notebook, docs). It runs `sema mcp`.
 
 ## Links
 

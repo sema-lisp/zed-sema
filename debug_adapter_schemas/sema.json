@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Sema debug configuration",
+  "description": "Launch configuration for the Sema debug adapter (sema dap).",
+  "type": "object",
+  "required": ["program"],
+  "properties": {
+    "request": {
+      "type": "string",
+      "enum": ["launch"],
+      "default": "launch",
+      "description": "Only 'launch' is supported."
+    },
+    "program": {
+      "type": "string",
+      "description": "Absolute path to the .sema file to debug.",
+      "default": "$ZED_FILE"
+    },
+    "stopOnEntry": {
+      "type": "boolean",
+      "description": "Break on the first line of the program.",
+      "default": false
+    }
+  }
+}
