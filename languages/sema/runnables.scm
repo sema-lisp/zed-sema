@@ -1,17 +1,6 @@
-; Run the entire Sema source file.
-(source_file) @run (#set! tag sema-run)
-
-; Run individual top-level definitions (defn, defun, define, defmacro, defagent, deftool)
+; Zed doesn't draw a runnable for the whole source file (the root node), so we
+; anchor a ▶ to the head symbol of each top-level form. Clicking it runs the
+; current file via the `sema-run` task (see the README for the task snippet).
 (source_file
-  (list
-    . (symbol) @_f
-    . (symbol) @run
-    (#any-of? @_f "defun" "defn" "defmacro" "defagent" "deftool" "define")
-  ) @_source (#set! tag sema-run-form))
-
-; Run any top-level list expression (non-definition)
-(source_file
-  (list
-    . (symbol) @run
-    (#not-any-of? @run "defun" "defn" "defmacro" "defagent" "deftool" "define" "define-record-type" "module" "import" "load" "export")
-  ) @_source (#set! tag sema-run-form))
+  (list . (symbol) @run)
+  (#set! tag sema-run))

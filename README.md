@@ -51,7 +51,9 @@ See [sema-lang.com](https://sema-lang.com) for other install options.
 
 ### Running Sema files
 
-The extension detects runnable code and draws a play button (▶) in the gutter — for the whole file and for each top-level form. **Zed doesn't let an extension bundle the task that the ▶ runs**, so you add it once, yourself. Run `zed: open tasks` (a global `tasks.json` that applies to every project) or create a project `.zed/tasks.json`, and add:
+The extension draws a play button (▶) in the gutter next to each top-level form. (Zed only renders runnables anchored to nodes — there's no whole-file ▶ — so it's anchored to each form; clicking any of them runs the file.)
+
+**Zed doesn't let an extension bundle the task the ▶ runs**, so you add it once, yourself. Run `zed: open tasks` (a global `tasks.json` that applies to every project) or create a project `.zed/tasks.json`, and add:
 
 ```json
 [
@@ -60,17 +62,11 @@ The extension detects runnable code and draws a play button (▶) in the gutter 
     "command": "sema",
     "args": ["$ZED_FILE"],
     "tags": ["sema-run"]
-  },
-  {
-    "label": "sema eval form",
-    "command": "sema",
-    "args": ["eval", "--expr", "$ZED_SELECTED_TEXT"],
-    "tags": ["sema-run-form"]
   }
 ]
 ```
 
-The `tags` match the runnable captures (`sema-run`, `sema-run-form`), so clicking a ▶ runs the corresponding task. Tasks run in your project shell, so `sema` resolves from your `PATH`. This is a one-time setup.
+The `tags` match the runnable's `sema-run` tag, so clicking a ▶ runs `sema` on the current file. Tasks run in your project shell, so `sema` resolves from your `PATH`. This is a one-time setup. You can also run it without the gutter via `zed: spawn task` → **sema run**.
 
 ### Language Server (LSP)
 
