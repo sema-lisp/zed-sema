@@ -66,25 +66,9 @@ A play button (▶) appears in the gutter — click it (or use the task runner) 
 
 ### Language Server (LSP)
 
-Sema ships a built-in language server (`sema lsp`). Enable it in your Zed settings (`cmd-,`):
+The extension **registers the language server automatically** — no settings needed. Open a `.sema` file and `sema lsp` starts (the `sema` binary is resolved from your `PATH`). Completions, hover, go-to-definition, references, rename, and semantic tokens work out of the box.
 
-```json
-{
-  "lsp": {
-    "sema": {
-      "binary": {
-        "path": "sema",
-        "arguments": ["lsp"]
-      }
-    }
-  },
-  "languages": {
-    "Sema": {
-      "language_servers": ["sema"]
-    }
-  }
-}
-```
+> If you added a manual `"lsp": { "sema": … }` block from an older version, you can remove it — the extension now provides the server.
 
 ### Debugging
 
@@ -107,6 +91,18 @@ The adapter runs `sema dap` over stdio (the `sema` binary is resolved from your 
 ### MCP server
 
 The `sema` MCP context server is registered automatically; enable it in Zed's agent panel to give the assistant access to Sema's tools (eval, build, notebook, docs). It runs `sema mcp`.
+
+> **If the MCP server fails to start** (`Broken pipe` / timeout), it's because Zed launched from the GUI can't find `sema` on its `PATH` — the context-server API can't resolve it the way the LSP/debugger can. Point Zed at the full path in your settings:
+>
+> ```json
+> {
+>   "context_servers": {
+>     "sema": { "command": { "path": "/Users/you/.cargo/bin/sema", "arguments": ["mcp"] } }
+>   }
+> }
+> ```
+>
+> (Find the path with `which sema`.) The extension honors this override.
 
 ## Links
 
