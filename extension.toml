@@ -1,14 +1,19 @@
 id = "sema"
 name = "Sema"
-version = "0.2.0"
+version = "0.3.0"
 schema_version = 1
-description = "Language support for Sema, a Lisp dialect with first-class LLM primitives — grammar, debugger, and MCP server."
+description = "Language support for Sema, a Lisp dialect with first-class LLM primitives — grammar, language server, debugger, and MCP server."
 repository = "https://github.com/sema-lisp/zed-sema"
 authors = ["Helge Sverre <helge.sverre@gmail.com>"]
 
 [grammars.sema]
 repository = "https://github.com/sema-lisp/tree-sitter-sema"
 commit = "b5e3dc873b34c1bcea662090b30b9fe8d9c10dab"
+
+# Language server — `sema lsp`. Registered so no manual settings.json is needed.
+[language_servers.sema]
+name = "Sema Language Server"
+language = "Sema"
 
 # Debug adapter — `sema dap` (stdio). Launch-and-debug .sema programs.
 [debug_adapters.sema]

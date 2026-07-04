@@ -1,16 +1,18 @@
 //! Zed extension for the Sema language.
 //!
 //! Beyond the tree-sitter grammar and language config (declared in
-//! `extension.toml`), this provides two runtime integrations backed by the
+//! `extension.toml`), this provides three runtime integrations backed by the
 //! `sema` binary:
 //!
+//! - **Language server** (`sema lsp`) — completions, hover, go-to-def, etc.
 //! - **Debug adapter** (`sema dap`) — launch-and-debug `.sema` programs.
 //! - **MCP context server** (`sema mcp`) — expose Sema's tools to the agent panel.
 
 use zed_extension_api::{
-    self as zed, serde_json, Command, ContextServerId, DebugAdapterBinary, DebugConfig,
-    DebugRequest, DebugScenario, DebugTaskDefinition, Project, Result,
-    StartDebuggingRequestArguments, StartDebuggingRequestArgumentsRequest, Worktree,
+    self as zed, serde_json, settings::ContextServerSettings, Command, ContextServerId,
+    DebugAdapterBinary, DebugConfig, DebugRequest, DebugScenario, DebugTaskDefinition,
+    LanguageServerId, Project, Result, StartDebuggingRequestArguments,
+    StartDebuggingRequestArgumentsRequest, Worktree,
 };
 
 struct SemaExtension;
@@ -30,12 +32,44 @@ impl zed::Extension for SemaExtension {
         SemaExtension
     }
 
+    // ── Language server: `sema lsp` ─────────────────────────────────────
+    fn language_server_command(
+        &mut self,
+        _language_server_id: &LanguageServerId,
+        worktree: &Worktree,
+    ) -> Result<Command> {
+        Ok(Command {
+            command: Self::sema_binary(worktree, None),
+            args: vec!["lsp".to_string()],
+            // Inherit the worktree shell env so the server picks up the user's
+            // PATH and any provider keys.
+            env: worktree.shell_env(),
+        })
+    }
+
     // ── MCP context server: `sema mcp` ──────────────────────────────────
     fn context_server_command(
         &mut self,
-        _context_server_id: &ContextServerId,
-        _project: &Project,
+        context_server_id: &ContextServerId,
+        project: &Project,
     ) -> Result<Command> {
+        // The context-server API can't resolve a binary from $PATH (it gets a
+        // Project, not a Worktree, so there's no `which`). Honor a user-provided
+        // command override in settings — `context_servers.sema.command` — so
+        // users whose GUI PATH lacks the `sema` install can point at it; else
+        // default to bare `sema mcp`.
+        if let Ok(ContextServerSettings {
+            command: Some(cmd), ..
+        }) = ContextServerSettings::for_project(context_server_id.as_ref(), project)
+        {
+            if let Some(path) = cmd.path {
+                return Ok(Command {
+                    command: path,
+                    args: cmd.arguments.unwrap_or_else(|| vec!["mcp".to_string()]),
+                    env: cmd.env.map(|e| e.into_iter().collect()).unwrap_or_default(),
+                });
+            }
+        }
         Ok(Command {
             command: "sema".to_string(),
             args: vec!["mcp".to_string()],
@@ -52,12 +86,9 @@ impl zed::Extension for SemaExtension {
         worktree: &Worktree,
     ) -> Result<DebugAdapterBinary, String> {
         Ok(DebugAdapterBinary {
-            command: Some(Self::sema_binary(
-                worktree,
-                user_provided_debug_adapter_path,
-            )),
+            command: Some(Self::sema_binary(worktree, user_provided_debug_adapter_path)),
             arguments: vec!["dap".to_string()],
-            envs: vec![],
+            envs: worktree.shell_env(),
             cwd: None,
             // stdio transport (no TCP connection)
             connection: None,
