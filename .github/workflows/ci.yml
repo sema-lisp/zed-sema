@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Validate extension.toml parses
+        run: |
+          python3 - <<'PY'
+          import tomllib, sys
+          with open("extension.toml", "rb") as f:
+              data = tomllib.load(f)
+          for key in ("id", "name", "version", "schema_version"):
+              assert key in data, f"extension.toml missing required key: {key}"
+          grammars = data.get("grammars", {})
+          assert "sema" in grammars, "extension.toml missing [grammars.sema]"
+          assert grammars["sema"].get("commit"), "grammars.sema.commit is required (grammar is pinned by commit)"
+          print("extension.toml OK:", data["id"], data["version"])
+          PY
+
+      - name: Check language query files are present
+        run: |
+          set -e
+          required="config.toml highlights.scm brackets.scm indents.scm outline.scm textobjects.scm runnables.scm injections.scm overrides.scm redactions.scm tasks.json"
+          missing=0
+          for f in $required; do
+            if [ ! -f "languages/sema/$f" ]; then
+              echo "::error::missing languages/sema/$f"
+              missing=1
+            fi
+          done
+          [ "$missing" -eq 0 ] && echo "all query files present"
