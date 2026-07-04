@@ -51,7 +51,7 @@ See [sema-lang.com](https://sema-lang.com) for other install options.
 
 ### Running Sema files
 
-The extension detects runnable code (a play button ▶ in the gutter for the whole file and each top-level form), but **Zed extensions can't ship tasks** — you define what the ▶ runs. Add these to your tasks (`zed: open tasks`, or a project `.zed/tasks.json`):
+The extension detects runnable code and draws a play button (▶) in the gutter — for the whole file and for each top-level form. **Zed doesn't let an extension bundle the task that the ▶ runs**, so you add it once, yourself. Run `zed: open tasks` (a global `tasks.json` that applies to every project) or create a project `.zed/tasks.json`, and add:
 
 ```json
 [
@@ -64,13 +64,13 @@ The extension detects runnable code (a play button ▶ in the gutter for the who
   {
     "label": "sema eval form",
     "command": "sema",
-    "args": ["eval", "--expr", "$ZED_SELECTED_TEXT", "--no-llm"],
+    "args": ["eval", "--expr", "$ZED_SELECTED_TEXT"],
     "tags": ["sema-run-form"]
   }
 ]
 ```
 
-The `tags` match the runnable captures, so the ▶ buttons run these. Tasks run in your project shell, so `sema` resolves from your `PATH`.
+The `tags` match the runnable captures (`sema-run`, `sema-run-form`), so clicking a ▶ runs the corresponding task. Tasks run in your project shell, so `sema` resolves from your `PATH`. This is a one-time setup.
 
 ### Language Server (LSP)
 
