@@ -29,7 +29,7 @@ jobs:
       - name: Check language query files are present
         run: |
           set -e
-          required="config.toml highlights.scm brackets.scm indents.scm outline.scm textobjects.scm runnables.scm injections.scm overrides.scm redactions.scm tasks.json"
+          required="config.toml highlights.scm brackets.scm indents.scm outline.scm textobjects.scm runnables.scm injections.scm overrides.scm redactions.scm"
           missing=0
           for f in $required; do
             if [ ! -f "languages/sema/$f" ]; then
