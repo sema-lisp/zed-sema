@@ -86,7 +86,10 @@ impl zed::Extension for SemaExtension {
         worktree: &Worktree,
     ) -> Result<DebugAdapterBinary, String> {
         Ok(DebugAdapterBinary {
-            command: Some(Self::sema_binary(worktree, user_provided_debug_adapter_path)),
+            command: Some(Self::sema_binary(
+                worktree,
+                user_provided_debug_adapter_path,
+            )),
             arguments: vec!["dap".to_string()],
             envs: worktree.shell_env(),
             cwd: None,
