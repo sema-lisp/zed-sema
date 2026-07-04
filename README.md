@@ -1,7 +1,16 @@
+<div align="center">
+
+<img src="https://sema-lang.com/logo.svg" alt="Sema" height="64">
+
 # Sema for Zed
 
-[![CI](https://img.shields.io/github/actions/workflow/status/sema-lisp/zed-sema/ci.yml?branch=main&logo=github&label=CI)](https://github.com/sema-lisp/zed-sema/actions/workflows/ci.yml)
-[![License](https://img.shields.io/github/license/sema-lisp/zed-sema)](LICENSE)
+**[Sema](https://sema-lang.com) support for [Zed](https://zed.dev)** — grammar, debugger, and MCP server.
+
+[![CI](https://img.shields.io/github/actions/workflow/status/sema-lisp/zed-sema/ci.yml?branch=main&label=CI&logo=github)](https://github.com/sema-lisp/zed-sema/actions)
+[![License](https://img.shields.io/github/license/sema-lisp/zed-sema?color=c8a855)](LICENSE)
+[![Website](https://img.shields.io/badge/website-sema--lang.com-c8a855)](https://sema-lang.com)
+
+</div>
 
 Language support for [Sema](https://sema-lang.com) — a Lisp dialect with first-class LLM primitives — in the [Zed](https://zed.dev) editor.
 
@@ -101,7 +110,12 @@ The `sema` MCP context server is registered automatically; enable it in Zed's ag
 
 ## Links
 
-- Website — [sema-lang.com](https://sema-lang.com)
-- Playground — [sema.run](https://sema.run)
-- Grammar — [tree-sitter-sema](https://github.com/sema-lisp/tree-sitter-sema)
-- This extension — [sema-lisp/zed-sema](https://github.com/sema-lisp/zed-sema)
+- **Website** — [sema-lang.com](https://sema-lang.com)
+- **Playground** — [sema.run](https://sema.run)
+- **Documentation** — [sema-lang.com/docs](https://sema-lang.com/docs/)
+- **Grammar** — [tree-sitter-sema](https://github.com/sema-lisp/tree-sitter-sema)
+- **Repository** — [sema-lisp/zed-sema](https://github.com/sema-lisp/zed-sema)
+
+## License
+
+[MIT](LICENSE) © [Helge Sverre](https://github.com/HelgeSverre)
