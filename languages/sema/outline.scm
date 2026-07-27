@@ -15,7 +15,7 @@
   (list
     .
     (symbol) @name)
-  (#eq? @_f "define")
+  (#any-of? @_f "define" "def")
 ) @item
 
 ; (define name value)
@@ -24,7 +24,7 @@
   (symbol) @_f
   .
   (symbol) @name
-  (#eq? @_f "define")
+  (#any-of? @_f "define" "def")
 ) @item
 
 ; (lambda (args) body) / (fn (args) body)
