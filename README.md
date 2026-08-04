@@ -34,7 +34,7 @@ The [tree-sitter-sema](https://github.com/sema-lisp/tree-sitter-sema) grammar is
 - **Code outline** — top-level `define`, `defun`, `defn`, `defmacro`, `defagent`, `deftool`, `define-record-type`, `lambda`/`fn`, block forms (`let`, `let*`, `letrec`, `begin`, `do`, `cond`, `case`, `when`, `unless`, `try`), and `module`/`import`.
 - **Auto-indent** — 2-space indentation for lists, vectors, and hash maps; outdent on closing delimiters.
 - **Vim text objects** — `af`/`if` for function definitions (`define`, `defun`, `lambda`, `fn`, `defmacro`), `ac`/`ic` for agents and tools (`defagent`, `deftool`), plus comment objects.
-- **Runnables & tasks** — a gutter play button (▶) to run the whole file (`sema-run`) or evaluate the selected form (`sema-run-form`), backed by the `sema` CLI.
+- **Runnables & tasks** — a gutter play button (▶) on each top-level form that runs the current file through the `sema-run` task, backed by the `sema` CLI.
 - **Debugging (DAP)** — launch-and-debug `.sema` programs via Sema's debug adapter (`sema dap`): breakpoints, stepping, and variable inspection. Pick **Sema** in Zed's debugger, or add a launch config (see below).
 - **MCP server** — the extension registers Sema's MCP context server (`sema mcp`), exposing Sema's tools (eval, build, notebook, docs) to Zed's agent panel.
 - **Secret redaction** — string arguments to `llm/configure`, `llm/define-provider`, and `llm/auto-configure` are hidden during screen sharing.
