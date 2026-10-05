@@ -15,14 +15,23 @@ jobs:
       - name: Validate extension.toml parses
         run: |
           python3 - <<'PY'
-          import tomllib, sys
+          import re, tomllib, sys
           with open("extension.toml", "rb") as f:
               data = tomllib.load(f)
           for key in ("id", "name", "version", "schema_version"):
               assert key in data, f"extension.toml missing required key: {key}"
           grammars = data.get("grammars", {})
           assert "sema" in grammars, "extension.toml missing [grammars.sema]"
-          assert grammars["sema"].get("commit"), "grammars.sema.commit is required (grammar is pinned by commit)"
+          commit = grammars["sema"].get("commit", "")
+          assert re.fullmatch(r"[0-9a-f]{40}", commit), "grammars.sema.commit must be a full commit SHA"
+          word_characters = set(tomllib.load(open("languages/sema/config.toml", "rb"))["word_characters"])
+          assert {"&", "%", "^", "~", "."} <= word_characters
+          for path in ("languages/sema/highlights.scm",):
+              query = open(path).read()
+              for name in ("bytes/length", "async/with-timeout", "path/canonicalize", "db/open", "workflow/mcp-handle"):
+                  assert f'"{name}"' in query, f"{path} missing {name}"
+              assert '"with-budget"' not in query, f"{path} contains obsolete with-budget"
+              assert '"llm/with-budget"' in query, f"{path} missing llm/with-budget"
           print("extension.toml OK:", data["id"], data["version"])
           PY
 
