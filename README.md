@@ -117,3 +117,7 @@ The `sema` MCP context server is registered automatically; enable it in Zed's ag
 ## License
 
 [MIT](LICENSE) © [Helge Sverre](https://github.com/HelgeSverre)
+
+## Optional theme
+
+Copy `extras/themes/sema.json` to `~/.config/zed/themes/sema.json` to install the Sema theme manually. Zed requires themes and language support to be published as separate extensions.
