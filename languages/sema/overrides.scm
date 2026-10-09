@@ -1,2 +1,2 @@
-[(comment) (block_comment)] @comment
+(comment) @comment
 (string) @string

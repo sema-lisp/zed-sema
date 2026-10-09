@@ -29,7 +29,7 @@ The [tree-sitter-sema](https://github.com/sema-lisp/tree-sitter-sema) grammar is
 ## Features
 
 - **Syntax highlighting** — special forms, LLM primitives (`llm/chat`, `defagent`, `deftool`, …), slash-namespaced builtins (`string/trim`, `json/encode`), keyword literals (`:foo`), booleans, `nil`, numbers, characters, strings, and quote/quasiquote/unquote operators.
-- **Comments** — `;` line comments and `#| … |#` block comments, with TODO/FIXME highlighting injected inside them.
+- **Comments** — `;` line comments, with TODO/FIXME highlighting injected inside them.
 - **Auto-pairs & bracket matching** — `()`, `[]`, `{}`, and `""`.
 - **Code outline** — top-level `define`, `defun`, `defn`, `defmacro`, `defagent`, `deftool`, `define-record-type`, `lambda`/`fn`, block forms (`let`, `let*`, `letrec`, `begin`, `do`, `cond`, `case`, `when`, `unless`, `try`), and `module`/`import`.
 - **Auto-indent** — 2-space indentation for lists, vectors, and hash maps; outdent on closing delimiters.
