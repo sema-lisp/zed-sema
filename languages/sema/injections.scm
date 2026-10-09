@@ -1,3 +1,3 @@
 ; Comment injection — enables TODO/FIXME highlighting inside comments.
-([(comment) (block_comment)] @content
+((comment) @content
   (#set! injection.language "comment"))
